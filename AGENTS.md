@@ -10,6 +10,7 @@
 
 ## Find the right starting point
 
+- [Gameplay context and external illustrated walkthrough](docs/codex/gameplay-reference.md)
 - [Architecture and callback lifecycle](docs/codex/architecture.md)
 - [Normal enemies: Bot and Moblin](docs/codex/enemies.md)
 - [Bosses: Horsehead and Carock](docs/codex/bosses.md)
