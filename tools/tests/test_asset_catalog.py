@@ -79,6 +79,65 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(payload["assets"]), 2)
         self.assertTrue((self.output / "annotate.js").is_file())
 
+    def test_palette_bgr_aliases_defaults_and_comment_exclusion(self):
+        (self.root / "scripts/p_init.gml").write_text('''
+C_WHT0=$FFFFFF;
+C_RED0=$0000FF;
+C_BLU0=$FF0000;
+C_GRN0=$00FF00;
+C_YLW0=$00FFFF;
+C_MGN0=$FF00FF;
+C_BLK0=$000000;
+C_CYN0=$FFFF00;
+C_TEST=$123456;
+C_ALIAS=C_TEST;
+// PAL_FAKE = build_pal(C_TEST);
+/* PAL_FAKE2 = build_pal(C_TEST); */
+PAL_TEST = build_pal(C_TEST,C_RED0,C_BLU0,C_GRN0,-2,-2,-2,-2);
+PAL_DEFAULT = build_pal(-1,C_ALIAS);
+PAL_COPY = PAL_TEST;
+PAL_EDIT = strReplaceAt(PAL_COPY, get_pal_col_pos(0,"B"), global.PAL_CHAR_PER_COLOR, color_str(C_TEST));
+PAL_EDIT = strReplaceAt(PAL_EDIT, get_pal_col_pos(0,"K"), global.PAL_CHAR_PER_COLOR, color_str(get_pal_color(PAL_EDIT,0,"B")));
+PAL_UNRESOLVED = build_pal(dynamic_value);
+''')
+        result = catalog.build_catalog(self.root, self.output)["palettes"]
+        presets = {p["name"]: p for p in result["presets"]}
+        self.assertEqual(set(presets), {"PAL_TEST", "PAL_DEFAULT", "PAL_COPY", "PAL_EDIT"})
+        self.assertEqual(presets["PAL_TEST"]["colors"][0], [0x56, 0x34, 0x12, 255])
+        self.assertEqual(presets["PAL_TEST"]["colors"][4:], presets["PAL_TEST"]["colors"][:4])
+        self.assertEqual(presets["PAL_DEFAULT"]["colors"][0], [255,255,255,255])
+        self.assertEqual(presets["PAL_DEFAULT"]["colors"][2], [0,0,255,255])
+        self.assertEqual(presets["PAL_EDIT"]["colors"][6], [0x56, 0x34, 0x12, 255])
+        self.assertEqual(presets["PAL_COPY"]["colors"][6], [0,0,255,255])
+        self.assertEqual(result["unresolved"], ["PAL_UNRESOLVED"])
+
+    def test_versions_follow_registration_callbacks_and_item_sprite_assignments(self):
+        for name in ("EnemyTest", "ItemTest"):
+            (self.root / "objects" / (name + ".object.gmx")).write_text('<object/>')
+        (self.root / "scripts/GameObjectData_Create.gml").write_text('''
+PIa = global.PI_MOB_RED;
+o_name = object_get_name(EnemyTest);
+data_go_scr(o_name, Test);
+data_go_prop2(o_name+"01", PIa, 0);
+// data_go_prop2(o_name+"99", PIa, 0);
+o_name = computed_name;
+data_go_prop2(o_name+"03", PIa, 0);
+o_name = object_get_name(object);
+data_go_scr(o_name, Test);
+data_go_prop2(o_name+"04", PIa, 0);
+o_name = object_get_name(ItemTest);
+_PI1=PIa;
+data_go_prop2(o_name+"02", _PI1, 0);
+''')
+        (self.root / "scripts/g_Create.gml").write_text(
+            '_obj=ItemTest; _name=object_get_name(_obj); _bit=0; _spr=ts_Test;')
+        result = catalog.build_catalog(self.root, self.output)
+        sprite = next(a for a in result["assets"] if a["name"] == "spr_Test")
+        tile = next(a for a in result["assets"] if a["name"] == "ts_Test")
+        self.assertEqual([(v["key"],v["slot"]) for v in sprite["variants"]], [("EnemyTest01","PI_MOB_RED")])
+        self.assertEqual([(v["key"],v["slot"]) for v in tile["variants"]], [("ItemTest02","PI_MOB_RED")])
+        self.assertTrue(sprite["frames"][0]["previewUrl"].startswith("data:image/png;base64,"))
+
 
 if __name__ == "__main__":
     unittest.main()

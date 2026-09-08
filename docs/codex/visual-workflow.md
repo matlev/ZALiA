@@ -1,5 +1,7 @@
 # Visual development workflow
 
+The asset atlas targets desktop use in Chrome/Edge. Mobile/tablet-specific design and testing are not required; preserve existing responsive CSS unless desktop work needs a change.
+
 ## Start the asset atlas
 
 From a PowerShell terminal at the repository root:
@@ -14,7 +16,7 @@ The launcher uses the bundled Codex Python when available, otherwise `py -3` or 
 python tools/generate_asset_catalog.py
 ```
 
-Open [the generated catalog](../../dev/generated/asset-catalog/index.html) in Chrome or Edge after generation. This link becomes valid after running the generator; generated files are deliberately not committed. The catalog uses standard-library Python and local HTML/CSS/JS, with no server, package install, internet connection or game build required. Re-run after asset changes. Keep it in this checkout: it links to original image/source files rather than copying them.
+Open [the generated catalog](../../dev/generated/asset-catalog/index.html) in Chrome or Edge after generation. This link becomes valid after running the generator; generated files are deliberately not committed. The catalog uses standard-library Python and local HTML/CSS/JS, with no server, package install, internet connection or game build required. Re-run after asset changes. Keep it in this checkout: links target original image/source files. Preview PNGs are also embedded in generated data so browsers allow canvas pixel reads from `file://` without security flags or a server.
 
 ## Find and discuss assets
 
@@ -30,7 +32,22 @@ The inspector provides:
 
 The default list contains resources registered in `ZALiA.project.gmx`; an option exposes unregistered files on disk. The generator reports malformed resources and missing images in the page and `diagnostics.json`. It rejects image references outside the checkout. It does not modify resources or the manifest.
 
-**Visual limits:** palette swapping changes source colors at runtime; many enemies switch between separate sprite resources in callbacks; combat hitboxes are separate from GMX sprite bounds. The atlas intentionally labels those distinctions. It is not a palette renderer, scene editor or simulation of AI.
+**Visual limits:** many enemies switch between separate sprite resources in callbacks; combat hitboxes are separate from GMX sprite bounds. The atlas provides static palette previews, not a scene editor or simulation of AI.
+
+## Preview colors and versions
+
+Select an asset, then use **Colors & versions** in the inspector:
+
+1. Choose a **Source-linked object version** when available. For example, `spr_Moblin_High_DrawA` offers `MoblA01/02/03` with orange/red/blue slots; `spr_Item_Bottle` offers `ItmE001/02/03/04` with red/blue jar slots. `spr_Bot_Norm` includes Bot versions and Capper registrations that share its placement sprite.
+2. The **Palette preview** selector chooses a named source preset for that slot. Switch between alternatives such as `MOB BLU1` (non-dungeon) and `MOB BLU2` (dungeon), or choose **Original source colors** to compare. The full preset list also allows manual experiments on any sprite or background, including resources with no resolved version link.
+3. The enlarged preview and resource playback use the chosen palette. Cards, frame thumbnails and original PNG links remain raw source images. The swatches show replacements for the eight base colors. Registration/preset links include source line numbers.
+4. Choices are remembered per asset for this page session and included in downloaded briefs for selected assets. They do not change game resources, game versions or save data.
+
+The generator extracts literal `C_*` colors, simple color aliases, supported named `build_pal` definitions, palette aliases and the observed `strReplaceAt` color replacements from [p_init.gml](../../scripts/p_init.gml). It follows [build_pal.gml](../../scripts/build_pal.gml), including omitted/`-1` arguments and `-2` second-quartet aliases. GML color integers are BGR; the browser converts them to RGBA. The canvas reproduces [shd_pal_swapper.shader](../../shaders/shd_pal_swapper.shader)'s exact RGBA matching and `$7F7F7F` transparency cutout. Unmatched colors remain unchanged. This models the palette swap before draw tint/brightness, not the entire draw pipeline.
+
+Version links inspect literal `o_name`/`data_go_prop2` blocks in [GameObjectData_Create.gml](../../scripts/GameObjectData_Create.gml), placement sprite references, direct registered callback sprite mentions, and item `_obj`/`_spr` assignments in [g_Create.gml](../../scripts/g_Create.gml). Source comments are excluded. These links are candidates for shared artwork, not proof that every version uses the selected sprite in every state. Computed object keys, transitive helper references and runtime overrides are not resolved. Missing links do not mean an asset is unused or has no variants.
+
+The tool does not execute GML or resolve current scenes, serialized palette metadata, randomizer palettes, player settings, flashing or custom draw overrides. Unsupported named palette expressions are omitted and listed in diagnostics. The current extraction provides 36 named presets; scene-dependent slots such as `PI_BGR1` require manual selection rather than an invented default. Use the source links and game validation when exact runtime appearance matters.
 
 ## Build a reference package
 
@@ -56,12 +73,13 @@ Source: [generator](../../tools/generate_asset_catalog.py), [UI files](../../too
 python -m unittest discover -s tools/tests -v
 node --check tools/asset_catalog/catalog.js
 node --check tools/asset_catalog/annotate.js
+node --check tools/asset_catalog/palettes.js
 node tools/tests/check_asset_catalog.cjs --browser "C:/path/to/chrome.exe"
 ```
 
 The browser check is optional tooling validation and requires Playwright resolvable by Node (installed locally or via `NODE_PATH`). Normal catalog use does not require Node or Playwright. Browser checks write screenshots/downloads to ignored `dev/generated/catalog-qa`.
 
-Verified in this pass: 778 registered resources (727 sprites, 51 backgrounds), zero generator warnings; four fixture tests; file-URL loading in headless Chrome; filters, pagination, sprite/frame/tile inspection, reference selection, annotation and Markdown/PNG downloads; desktop/mobile layout with no JavaScript errors. This count reflects this checkout, not a future invariant. No GMS build or gameplay test was performed.
+Verified in this pass: 778 registered resources (727 sprites, 51 backgrounds), zero resource warnings; six fixture tests; file-URL loading in headless Chrome; exact orange palette output pixels, blue scene-preset differences, enemy/jar version switching, all extracted preset selections, filters, pagination, sprite/frame/tile inspection, reference selection, annotation and Markdown/PNG downloads; desktop layout with no JavaScript errors. Counts reflect this checkout, not future invariants. No GMS build or gameplay test was performed.
 
 ## Next boundary
 

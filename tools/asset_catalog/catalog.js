@@ -98,6 +98,7 @@ function inspect(a, setHash = true) {
   const canvas = el("canvas", "Asset preview"); canvas.className = "preview"; canvas.id = "preview";
   canvas.setAttribute("aria-label", "Enlarged preview of " + a.name);
   wrap.append(canvas); pane.append(wrap);
+  paletteControls(a, pane);
   const controls = el("div", undefined, "controls");
   const zoomLabel = el("label", "Zoom"); const zoom = el("select"); zoom.setAttribute("aria-label", "Inspector zoom");
   for (const n of [1, 2, 4, 8]) { const o = el("option", n + "×"); o.value = n; zoom.append(o); }
@@ -143,7 +144,7 @@ function inspect(a, setHash = true) {
     b.setAttribute("aria-label", "Frame " + f.index); b.dataset.frame = i;
     if (f.exists) { const img = el("img"); img.src = f.url; img.alt = ""; img.loading = "lazy"; b.append(img); }
     b.append(document.createTextNode(f.index)); strip.append(b);
-  }); pane.append(strip);
+  }); pane.append(el("p", "Source frames · selected palette applies to the enlarged preview", "fine"), strip);
   const meta = el("div", undefined, "meta");
   const addMeta = (label, value) => { const item = el("div"); item.append(el("span", label), document.createTextNode(value)); meta.append(item); };
   addMeta("Dimensions", `${a.width} × ${a.height}`); addMeta("Resource frames", String(a.frames.length));
@@ -171,7 +172,7 @@ function loadPreview() {
   const img = new Image();
   img.onload = () => { if (revision === previewRevision) { previewImage = img; drawPreview(); } };
   img.onerror = () => { if (revision === previewRevision) { drawPreview(); $("tile-readout").textContent = "Image could not be loaded."; } };
-  img.src = f.url;
+  img.src = f.previewUrl || f.url;
 }
 function drawPreview() {
   const canvas = $("preview"); if (!canvas || !current) return;
@@ -180,7 +181,7 @@ function drawPreview() {
   canvas.width = Math.max(1, Math.round(a.width * actualScale)); canvas.height = Math.max(1, Math.round(a.height * actualScale));
   const ctx = canvas.getContext("2d"); ctx.imageSmoothingEnabled = false;
   if (!previewImage) { ctx.fillStyle = "#e7eee7"; ctx.font = "12px sans-serif"; ctx.fillText("Image unavailable", 5, 18); return; }
-  ctx.drawImage(previewImage, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(paletteImage(previewImage), 0, 0, canvas.width, canvas.height);
   ctx.lineWidth = 1; ctx.strokeStyle = "#f6b785";
   if (a.bbox && showBounds) { const [l,t,r,b] = a.bbox; ctx.strokeRect(l*actualScale+.5,t*actualScale+.5,(r-l+1)*actualScale-1,(b-t+1)*actualScale-1); }
   if (a.origin && showOrigin) {
@@ -214,6 +215,8 @@ function downloadBrief() {
     const a = byName.get(name); lines.push("### `" + name + "`", "", "- Resource: `" + a.path + "`",
       `- Source dimensions: ${a.width} x ${a.height}; resource frames: ${a.frames.length}`);
     if (tileNotes.has(name)) lines.push("- Inspection: " + tileNotes.get(name));
+    const colors = paletteChoices.get(name);
+    if (colors) lines.push(`- Color preview: ${colors.palette || "original source colors"}; source-linked version: ${colors.variant || "manual / unspecified"}`);
     lines.push("- PNG: `" + (a.frames[0]?.path || "missing") + "`", "");
   }
   if (!selected.size) lines.push("Add exact resource names or describe what to look for.", "");
@@ -222,7 +225,7 @@ function downloadBrief() {
     "- [ ] Describe a visible, testable outcome.", "- [ ] Preserve the intended unchanged behavior.",
     "- [ ] Record runtime tests separately from static inspection.", "", "## Constraints", "",
     "Use the existing ZALiA GMS 1.4.9999 infrastructure and docs/codex cookbooks.",
-    "Catalog images show source colors and frames, not a verified in-game appearance.", "");
+    "Catalog previews show source frames with optional named palettes, not a verified in-game appearance.", "");
   const url = URL.createObjectURL(new Blob([lines.join("\n")], {type:"text/markdown;charset=utf-8"}));
   const a = el("a"); a.href = url; a.download = "request.md"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   toast("Reference brief downloaded");
@@ -236,6 +239,9 @@ $("open-brief").onclick = () => { renderBrief(); $("brief-dialog").showModal(); 
 $("download").onclick = downloadBrief;
 $("diagnostics-title").textContent = `Generator diagnostics · ${window.CATALOG.warnings.length} warnings`;
 $("diagnostics-body").textContent = window.CATALOG.warnings.join("\n") || "No missing images or malformed resources found.";
+const paletteSkipped = window.CATALOG.palettes?.unresolved || [];
+$("diagnostics-body").textContent += `\n\n${palettePresets.length} named palette presets extracted. Dynamic scene palettes and randomizers are not evaluated.`;
+if (paletteSkipped.length) $("diagnostics-body").textContent += "\nUnresolved named palette expressions (omitted): " + paletteSkipped.join(", ");
 window.addEventListener("hashchange", () => { try { const a = byName.get(decodeURIComponent(location.hash.slice(1))); if (a) inspect(a, false); } catch { } });
 document.addEventListener("visibilitychange", () => { if (document.hidden && animation) { stopAnimation(); if (current) inspect(current, false); } });
 persist(); filter();

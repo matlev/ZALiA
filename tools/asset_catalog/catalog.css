@@ -560,3 +560,24 @@ h3 {
     max-width:100%
   }
 }
+.palette-controls {
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid #43564f;
+  border-radius: 10px;
+  min-width: 0;
+}
+.palette-controls label { display: block; margin: 10px 0; }
+.palette-controls select { display: block; width: 100%; min-width: 0; margin-top: 5px; }
+.palette-swatches { display: flex; gap: 5px; flex-wrap: wrap; }
+.palette-swatches span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #84958b;
+  border-radius: 4px;
+  color: white;
+  text-shadow: 0 1px 2px black, 1px 0 2px black, -1px 0 2px black;
+  font-size: 11px;
+}
