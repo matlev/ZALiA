@@ -1,0 +1,4 @@
+# Regenerable visual tools and local concept/reference packages.
+/dev/generated/
+/dev/references/
+__pycache__/

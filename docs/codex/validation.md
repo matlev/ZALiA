@@ -23,6 +23,8 @@ Use these separate claims in an implementation report:
 
 ## Existing developer tools
 
+For the complete source-verified controls and menu gates, use [Existing developer controls](debug-tools.md). The external [asset atlas and annotation workflow](visual-workflow.md) can produce visual reference packages without modifying gameplay.
+
 The project currently defines `DEV=true` and `ROOM_SPEED_BASE=60` in its manifest; inspect rather than assume these values in future builds. [obj_start_Create](../../scripts/obj_start_Create.gml) defaults to a fixed `RUN_RANDOMIZATION_SEED` unless `global.randomized` is enabled. Saved/randomizer state still affects reproducibility.
 
 [Dev_RmWarper_Step](../../scripts/Dev_RmWarper_Step.gml) operates in action-room pause state and requests opening with `Input.GP_Select_held && Input.GP_Face4_pressed` (commented as hold SELECT + press Xbox Y). Inspect current input bindings and [Dev_RmWarper_update_3a](../../scripts/Dev_RmWarper_update_3a.gml) for destination/exit selection. This uses registered scenes; it cannot fix a missing registration.

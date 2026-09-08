@@ -17,3 +17,5 @@
 - [Maps, scenes, Tiled, and generated metadata](docs/codex/maps.md)
 - [GameMaker resource registration](docs/codex/resources.md)
 - [Validation and onboarding acceptance](docs/codex/validation.md)
+- [Visual asset atlas and reference packages](docs/codex/visual-workflow.md)
+- [Existing Dev Tools menu and scene warper](docs/codex/debug-tools.md)

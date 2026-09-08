@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ZALiA · Asset atlas</title><link rel="stylesheet" href="catalog.css">
+  <script src="data.js" defer></script><script src="catalog.js" defer></script><script src="annotate.js" defer></script>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="emblem" aria-hidden="true">Z</span><div><p class="eyebrow">ZALiA / DEVELOPER TOOLS</p><h1>Asset atlas<span class="dot">.</span></h1></div></div>
+  <div class="header-note">A shared visual vocabulary.<br><span>Local files · read-only · no game changes</span></div>
+</header>
+<main>
+  <section class="intro"><div><h2>Find the piece. Build the idea.</h2><p>Explore source sprites and tilesets. Select an asset to inspect it, then collect references for your next request.</p></div><button id="open-brief" class="primary">Reference brief <span id="selection-count">0</span></button></section>
+  <div class="notice">Source colors and resource frames only. In-game palettes, callback-driven animation, and combat hitboxes may differ.</div>
+  <section class="toolbar" aria-label="Asset filters">
+    <label class="search">Search assets<input id="search" type="search" placeholder="Try Moblin, Bot, Dungeon…" autocomplete="off"></label>
+    <label>Type<select id="kind"><option value="">All assets</option value="sprite">Sprites</option><option value="background">Backgrounds / tilesets</option></select></label>
+    <label>Resource group<select id="group"><option value="">All groups</option></select></label>
+    <label class="check"><input id="unregistered" type="checkbox"> Include unregistered files</label>
+  </section>
+  <div class="results-bar"><p id="results" role="status"></p><label>Card zoom <select id="zoom"><option value="2">2×</option><option value="4" selected>4×</option><option value="8">8×</option></select></label></div>
+  <div class="workspace">
+    <section class="collection" aria-label="Asset collection"><div id="grid" class="grid"></div><nav class="pagination" aria-label="Pages"><button id="prev">← Previous</button><span id="page"></span><button id="next">Next →</button></nav></section>
+    <aside id="inspector" aria-label="Asset inspector"><div class="empty-inspector"><span class="cross-icon">＋</span><h2>A closer look</h2><p>Select any asset for frames, origins, source links, and references.</p></div></aside>
+  </div>
+  <details id="diagnostics"><summary id="diagnostics-title">Generator diagnostics</summary><pre id="diagnostics-body"></pre></details>
+  <footer>Generated from ZALiA GMX resources. Re-run the generator after asset changes. <a href="../../../docs/codex/visual-workflow.md">Workflow guide</a></footer>
+</main>
+<dialog id="brief-dialog"><form method="dialog"><button class="close" aria-label="Close reference brief">✕</button></form><p class="eyebrow">FROM REFERENCE TO REQUEST</p><h2>Your next idea</h2><p>Download a Markdown brief and add your screenshots or sketch alongside it. Nothing is uploaded or written into the game.</p>
+  <label>Title<input id="brief-title" value="ZALiA content idea"></label>
+  <label>Desired change<textarea id="brief-desired" rows="4" placeholder="What should look or behave differently? What stays the same?"></textarea></label>
+  <div class="brief-fields"><label>Logical scene ID<input id="brief-scene" placeholder="e.g. _PalcA_0D"></label><label>Tile filename<input id="brief-tile" placeholder="e.g. PalcA_012"></label><label>Object + version<input id="brief-object" placeholder="e.g. Horsehead01, version 1"></label><label>Quest / settings<input id="brief-settings" placeholder="Quest, randomizer, relevant mods"></label></div>
+  <h3>Selected references</h3><div id="brief-assets"></div>
+  <details class="annotation"><summary>Annotate a screenshot or sketch</summary><p class="fine">Choose a local image, then drag an arrow or box. Text labels are placed with a click. Your original stays unchanged; export a separate PNG. Image and markup stay in this page until you close or reload it.</p>
+    <label>Screenshot / sketch<input id="reference-image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+    <div class="controls"><label>Tool<select id="mark-tool"><option value="arrow">Arrow</option><option value="box">Box</option><option value="text">Text</option></select></label><label>Color<input id="mark-color" type="color" value="#ff6655"></label><button type="button" id="undo-mark" disabled>Undo</button><button type="button" id="export-image" disabled>Download annotated PNG</button></div>
+    <label>Text label<input id="mark-label" placeholder="e.g. Wider jump gap here" maxlength="120"></label>
+    <p id="image-status" role="status" class="fine">No image loaded.</p><canvas id="reference-canvas" aria-label="Screenshot annotation canvas" hidden></canvas>
+  </details>
+  <button id="download" class="primary">Download request.md</button>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+</body></html>
