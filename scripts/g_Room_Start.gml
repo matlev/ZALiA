@@ -1,5 +1,7 @@
 // g_Room_Start()
 
+dev_boss_test_room_start();
+
 
 if (DEV)
 {
@@ -1068,6 +1070,10 @@ if (_ROOM_A)
     
     // -------------------------------------------------------------------------
     // Build `dg_spawn_prxm` and `dg_spawn_prio`
+    // Area changes reset spawn permissions and restock jars above. A test return
+    // restores the checkpoint again before constructing the original spawn grids.
+    if (dev_boss_test_active() && global.DevBossTest_stage==5)
+        dev_boss_test_restore(false);
     g_Room_Start_1(_SCENE_IS_RANDOMIZED, _scene_used);
 }
 

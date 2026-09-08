@@ -406,6 +406,7 @@ switch(BattleState)
             if(!dg_AttackRounds[#Attack_round-1,1]  // current hp skull
             &&  Attack_round>=Attack_ROUNDS ) // this is last round
             {   // DEFEATED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if (dev_boss_test_defeated(id)) return false;
                 return true;
             }
             else
@@ -563,6 +564,7 @@ switch(BattleState)
             
             if (_C1)
             {   // DEFEATED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if (dev_boss_test_defeated(id)) return false;
                 hp = 0;
                 stun_timer = STUN_DURATION1;
                 timer    = 0;

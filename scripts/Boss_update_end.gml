@@ -1,5 +1,7 @@
 /// Boss_update_end()
 
+if (pending_death && dev_boss_test_defeated(id)) exit;
+
 
 if (g.view_lock_boss 
 &&  pending_death 

@@ -15385,6 +15385,26 @@
         <script>scripts\db_LifeDoll_data_1a.gml</script>
       </scripts>
     </scripts>
+    <scripts name="BossTesting">
+      <script>scripts\dev_boss_test_active.gml</script>
+      <script>scripts\dev_boss_test_capture_fields.gml</script>
+      <script>scripts\dev_boss_test_catalog.gml</script>
+      <script>scripts\dev_boss_test_checkpoint.gml</script>
+      <script>scripts\dev_boss_test_defeated.gml</script>
+      <script>scripts\dev_boss_test_pc_spawn.gml</script>
+      <script>scripts\dev_boss_test_restore.gml</script>
+      <script>scripts\dev_boss_test_return.gml</script>
+      <script>scripts\dev_boss_test_room_start.gml</script>
+      <script>scripts\dev_boss_test_spawn_xy.gml</script>
+      <script>scripts\dev_boss_test_start.gml</script>
+      <script>scripts\OptionsMenu_BossTest_update.gml</script>
+      <script>scripts\OptionsMenu_Draw_BossTest.gml</script>
+      <script>scripts\OptionsMenu_BossHero_load.gml</script>
+      <script>scripts\OptionsMenu_BossHero_save.gml</script>
+      <script>scripts\OptionsMenu_BossHero_update.gml</script>
+      <script>scripts\OptionsMenu_Draw_BossHero.gml</script>
+      <script>scripts\dev_boss_test_hero_apply.gml</script>
+    </scripts>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\shd_pal_swapper.shader</shader>

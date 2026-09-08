@@ -1,5 +1,7 @@
 /// GameObjectB_step()
 
+if (dev_boss_test_active() && global.DevBossTest_stage==4) exit;
+
 
 if(!state) exit; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

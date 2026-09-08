@@ -1,5 +1,7 @@
 /// update_OptionsMenu()
 
+if (dev_boss_test_active()) return false;
+
 
 if (g.room_type!="A")
 {
@@ -54,6 +56,7 @@ with(global.OPTIONS_MENU)
             &&  g.room_type=="A" )
             //if (OpenClose_Key_pressed)
             {
+                dev_boss_test_checkpoint();
                 OpenClose_Key_pressed = false;
                 
                 //dm_options[?"Rando"+hex_str(Rando_DUNGEONS_REQUIREMENT)+STR_State] = val(global.dm_save_file_settings[?STR_Crystal+STR_Required+STR_Count], global.RandoDungeonRequirement_MAX);
@@ -128,6 +131,8 @@ with(global.OPTIONS_MENU)
             case   menu_state_MAIN:         {OptionsMenu_Main_update();        break;}
             case   menu_state_AUDIO_CUSTOM: {OptionsMenu_AudioCustom_update(); break;}
             case   menu_state_INPUT_CONFIG: {OptionsMenu_InputConfig_update(); break;}
+            case menu_state_BOSS_TEST: {OptionsMenu_BossTest_update(); break;}
+            case menu_state_BOSS_HERO: {OptionsMenu_BossHero_update(); break;}
             case   menu_state_DEV_TOOLS:    {OptionsMenu_DevTools_update();    break;}
             case   menu_state_RANDO:        {OptionsMenu_RandoOptions_update();break;}
             case   menu_state_OTHER:        {OptionsMenu_Other_update();       break;}
@@ -140,6 +145,7 @@ with(global.OPTIONS_MENU)
         
         // =========================================================================
         case sub_state_CLOSING1:{ // ------------------------------------------
+        if (menu_state==menu_state_BOSS_HERO) OptionsMenu_BossHero_save();
         udp_OptionsMenu();
         //if (timer){timer--; break;}
         

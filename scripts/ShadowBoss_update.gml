@@ -329,6 +329,7 @@ else
         {   // 9ACD
             //sdm("down_held: "+string(down_held)+", attack_phase: "+string(attack_phase)+", shld_hb_idx==ShieldHB_IDX_LOW: "+string(shld_hb_idx==ShieldHB_IDX_LOW)+", global.pc.attack_phase: "+string(global.pc.attack_phase));
                 hp--;
+            if (!hp && dev_boss_test_defeated(id)) exit;
             if (hp) g.boss_stun_timer = $18;
             else    g.boss_stun_timer = $FF;
             

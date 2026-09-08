@@ -162,3 +162,5 @@ if (DEV) sdm(" PC_spawn()  "+"spawn_xl $"+hex_str(spawn_xl)+", spawn_yt $"+hex_s
 
 
 
+
+dev_boss_test_pc_spawn();

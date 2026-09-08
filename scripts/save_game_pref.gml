@@ -1,5 +1,8 @@
 /// save_game_pref()
 
+// A test must never update the active save or its settings.
+if (dev_boss_test_active()) exit;
+
 
 var _i, _idx, _val, _count;
 var _dm = ds_map_create();

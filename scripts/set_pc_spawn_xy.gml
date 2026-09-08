@@ -58,3 +58,5 @@ with(global.pc)
 
 
 
+
+dev_boss_test_spawn_xy();

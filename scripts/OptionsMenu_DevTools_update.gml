@@ -62,6 +62,18 @@ if(!timer2)
 // -------------------------------------------------------------------------------
 switch(DevTools_cursor)
 {
+    case DevTools.BOSS_TEST:{
+        if (!timer && _InputConfirm_pressed)
+        {
+            BossTest_quest=clamp(f.quest_num,1,2);
+            BossTest_cursor=0;
+            dev_boss_test_catalog(BossTest_quest);
+            menu_state=menu_state_BOSS_TEST;
+            timer=DURATION1;
+            aud_play_sound(CONFIRM_SOUND1);
+        }
+        break;
+    }
     // -------------------------------------------------
     case DevTools.DEV_TOOLS_STATE:{
     if (timer) break;

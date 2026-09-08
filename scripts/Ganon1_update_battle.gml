@@ -600,6 +600,7 @@ if (_damage_floor
                 _will_change=true;
                 if (_i+1==_COUNT)
                 {   // DEFEATED
+                    if (dev_boss_test_defeated(id)) exit;
                     var _DATAKEY = get_defeated_dk()+dk_spawn;
                     f.dm_quests[?_DATAKEY] = val(f.dm_quests[?_DATAKEY])+1;
                 }

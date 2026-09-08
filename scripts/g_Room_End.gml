@@ -125,3 +125,8 @@ repeat(8) show_debug_message("");
 
 
 
+
+// Capture permissions AFTER ordinary despawn cleanup makes living actors
+// eligible to return. A snapshot of live permissions would contain zeros.
+if (dev_boss_test_active() && global.DevBossTest_stage==1)
+    dev_boss_test_capture_fields(g.id,"dm_spawn",1,0);

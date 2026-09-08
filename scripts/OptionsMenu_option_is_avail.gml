@@ -54,6 +54,7 @@ switch(argument0)
         //case DevTools.PC_DASH:        {return DEV; break;}
         case DevTools.BGR_COLOR:      {return true; break;}
         case DevTools.ROOM_COLOR:     {return true; break;}
+        case DevTools.BOSS_TEST: {return DEV; break;}
         case DevTools.BACK:           {return true; break;}
     }//switch(argument1)
     break;}//case Menu_DEV_TOOLS

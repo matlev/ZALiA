@@ -109,6 +109,8 @@ if (_y+_font_h<MenuWindow_yb-$8)
     case   menu_state_DEV_TOOLS:    {_text=MainOptions_dg[#MainOption_DEV_TOOLS,0]; break;}
     case   menu_state_RANDO:        {_text="RANDO OPTIONS"; break;} // pad
     case   menu_state_OTHER:        {_text="OTHER"; break;}
+    case   menu_state_BOSS_TEST:    {_text="BOSS TESTING"; break;}
+    case   menu_state_BOSS_HERO:    {_text="HERO STATS"; break;}
     }
     _text = "-"+_text+"-";
     _x  = drawX+(MenuWindow_w>>1); // window xc
@@ -128,6 +130,8 @@ _y += _font_h; // bottom of head
 
 // ----------------------------------------------------------------------------------
 switch(menu_state){
+case menu_state_BOSS_TEST: {OptionsMenu_Draw_BossTest(_y+4); break;}
+case menu_state_BOSS_HERO: {OptionsMenu_Draw_BossHero(_y+6); break;}
 case   menu_state_MAIN:         {OptionsMenu_Draw_Main(_y+6);         break;}//case Menu_MAIN
 case   menu_state_AUDIO_CUSTOM: {OptionsMenu_Draw_AudioCustom(_y+8);  break;}//case Menu_AUDIO_CUSTOM
 case   menu_state_INPUT_CONFIG: {OptionsMenu_Draw_InputConfig(_y+8);  break;}//case menu_state_INPUT_CONFIG

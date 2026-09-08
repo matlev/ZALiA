@@ -1,5 +1,13 @@
 /// room_goto_(room, *width, *height)
 
+// Leaving the arena (including pits/warps) cancels the test. The return
+// itself has already changed stage to 4 and uses the ordinary room loader.
+if (dev_boss_test_active() && (global.DevBossTest_stage==2 || global.DevBossTest_stage==3))
+{
+    dev_boss_test_return("arena exit");
+    exit;
+}
+
 
 var                                  _view_w = g.VIEW_W;
 if (argument_count>1 && argument[1]) _view_w = clamp(argument[1], 1<<8,4<<8);

@@ -31,6 +31,14 @@ Some actions call `save_game_pref`, so toggles can persist across sessions. Use 
 
 These actions also enable `g.DevTools_state`. A display toggle does not enable a new collision system; compare the overlay to actual gameplay interactions. Record which overlays were active in screenshots. The checked-in manifest currently defines `DEV=true`; do not assume a “release” name disables this block.
 
+## Boss testing
+
+**Options → DEV TOOLS → BOSS TESTING** selects registered Q1/Q2 encounters,
+including cave Carock and other variants. It uses a temporary maximum build and
+returns to an in-memory Link/progression checkpoint when the encounter ends.
+See [boss testing](boss-testing.md) for scope, choreography, isolation hooks and
+the outstanding IDE/runtime acceptance checklist.
+
 ## Scene warper
 
 The existing [Dev_RmWarper_Step](../../scripts/Dev_RmWarper_Step.gml) requires an action scene with `g.gui_state_PAUSE`. While paused, hold **SELECT** and press the **Xbox Y / GP_Face4** binding to request the warper. Its original `DEV`/`DevTools_state` gate is commented out with a note that anyone can use it for custom content.

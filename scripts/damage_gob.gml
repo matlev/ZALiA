@@ -20,6 +20,7 @@ with(argument0)
         hp-=argument1;
     if (hp<=0)
     {
+        if (dev_boss_test_defeated(id)) exit;
         hspd_pushback = 0;
         update_kill_count(); // kill count
         

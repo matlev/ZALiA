@@ -1,5 +1,8 @@
 /// PC_update_death()
 
+if (dev_boss_test_active() && global.pc.is_dead)
+    return dev_boss_test_return("Link died");
+
 
 // C2D5: JSR D385, C2E9: JSR D385, D3CC
 if (global.pc.is_dead 

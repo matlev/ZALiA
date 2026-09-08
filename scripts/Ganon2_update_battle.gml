@@ -235,6 +235,7 @@ if (hp)
                 aud_play_sound(get_audio_theme_track(dk_StrikeEnemy));
                 //sdm("Ganon2 hp: "+string(hp));
                     hp--;
+                if (!hp && dev_boss_test_defeated(id)) exit;
                 if (hp)
                 {
                     stun_timer         = STUN_DURATION1; // $30

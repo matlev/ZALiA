@@ -1,5 +1,9 @@
 # Validation and fresh-agent acceptance
 
+For the in-game boss tester, use the [specific acceptance checklist](boss-testing.md#validation-and-remaining-acceptance)
+and `python tools/check_boss_testing.py`. Its cache/resource checks do not replace
+GML compilation or testing state restoration in the running game.
+
 ## Evidence levels
 
 No automated CLI gameplay test suite or CI build workflow was found in this checkout. [Tester1.object.gmx](../../objects/Tester1.object.gmx), [db_test_various_1a](../../scripts/db_test_various_1a.gml) and developer scripts are ad hoc tools, not a documented headless test runner. Do not execute arbitrary `dev_*` scripts without reading them: some generate or replace data.

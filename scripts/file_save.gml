@@ -1,5 +1,8 @@
 /// file_save(file num, will eliminate)
 
+// A test must never update the active save or its settings.
+if (dev_boss_test_active()) exit;
+
 
 /*
 if (DEV)

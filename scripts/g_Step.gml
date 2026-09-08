@@ -63,6 +63,18 @@ Audio_update();
 // C132  - Input
 with(Input) Input_update2(); // determine inputs for this frame
 
+if (dev_boss_test_active())
+{
+    if (global.DevBossTest_stage==3)
+    {
+        if (keyboard_check_pressed(vk_escape)
+        || keyboard_check_pressed(global.OPTIONS_MENU.OpenClose_Key_KEY)
+        || (Input.GP_Other3_held && Input.GP_Other4_held && Input.GP_Other2_pressed))
+            dev_boss_test_return("cancelled");
+    }
+    if (global.DevBossTest_stage==4) exit;
+}
+
 
 
 

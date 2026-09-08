@@ -1,5 +1,8 @@
 /// set_saved_value(file num, datakey, new value, *delete)
 
+// A test must never update the active save or its settings.
+if (dev_boss_test_active()) exit;
+
 // For save file data(like SaveFile_1.txt) in %localappdata% directory
 
 

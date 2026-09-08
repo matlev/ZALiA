@@ -23,6 +23,17 @@ if (argument_count>_arg) _DIALOGUE_DATAKEY = argument[_arg++];
 
 //  ========================================================================================================
 //  ---------------------------------------------------------------------------------------
+// Preserve normal terrain/room actors, but suppress automatic boss copies
+// and scene cutscenes. Rebonack's rider is part of the selected fight.
+if (dev_boss_test_active() && (global.DevBossTest_stage==2 || global.DevBossTest_stage==3))
+{
+    // Shadow Link's existing pre-fight controller sets up his fighting state.
+    // Its post-fight controller is intentionally excluded.
+    if (is_ancestor(_OBJECT,Cutscene)
+    && !(_OBJECT==Cutscene_ShadowBoss_1 && global.DevBossTest_object==ShadowLonk01)) return noone;
+    if (is_ancestor(_OBJECT,Boss) && !global.DevBossTest_allow_spawn
+    && _OBJECT!=Rebonack01B) return noone;
+}
 with(instance_create(_XL,_YT, _OBJECT))
 {
     // get scripts from data, run scr_vars, run scr_ini1

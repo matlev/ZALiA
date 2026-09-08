@@ -1,5 +1,7 @@
 /// cutscene_update()
 
+if (dev_boss_test_active() && global.DevBossTest_stage==4) exit;
+
 
 if(!cutscene) cutscene_part = 0;
 if(!cutscene) cutscene_ctr  = 0;

@@ -95,3 +95,8 @@ if (_exists)                             Other_dg=undefined;
 
 
 
+
+ds_grid_destroy(BossTest_dg);
+ds_grid_destroy(BossHero_dg);
+if (ds_exists(global.DevBossTest_checkpoint,ds_type_grid))
+    ds_grid_destroy(global.DevBossTest_checkpoint);

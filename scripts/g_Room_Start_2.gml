@@ -554,3 +554,8 @@ else
 
 
 
+// Match the test-only per-frame lighting override before the first room draw.
+if (dev_boss_test_active())
+{
+    if (global.DevBossTest_stage==2) set_rm_brightness(RM_BRIGHTNESS_MAX);
+}

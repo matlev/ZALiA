@@ -1,5 +1,17 @@
 /// OptionsMenu_Create()
 
+global.DevBossTest_stage=0;
+global.DevBossTest_checkpoint=-1;
+global.DevBossTest_allow_spawn=false;
+BossTest_dg=ds_grid_create(5,0);
+BossTest_quest=1;
+BossTest_cursor=0;
+BossHero_dg=ds_grid_create(6,0);
+BossHero_row=0;
+BossHero_item=0;
+BossHero_skill=0;
+BossHero_dirty=false;
+
 if (DEV)
 {
     var _START_TIME = current_time;
@@ -148,6 +160,8 @@ menu_state_DEV_TOOLS     = _a++;
 menu_state_AUDIO_CUSTOM  = _a++;
 menu_state_RANDO         = _a++;
 menu_state_OTHER         = _a++;
+menu_state_BOSS_TEST     = _a++;
+menu_state_BOSS_HERO     = _a++;
 menu_state               = _first;
 
 
@@ -375,6 +389,7 @@ enum DevTools
 {
     DEV_TOOLS_STATE,  // 
     SET_DEFAULT,      // Turn all options off
+    BOSS_TEST,        // Isolated boss encounters
     APP_PERFORMANCE,  // App Performance. show_debug_overlay()
     HITBOXES,         // Show hitboxes
     SCP,              // Solid Collision Points
@@ -412,6 +427,10 @@ DevTools_dg[#_i,1] = _font;
 //                                                                          //
              _i=DevTools.SET_DEFAULT;
 DevTools_dg[#_i,0] = "SET ALL TO DEFAULT";
+DevTools_dg[#_i,1] = _font;
+//                                                                          //
+             _i=DevTools.BOSS_TEST;
+DevTools_dg[#_i,0] = "BOSS TESTING";
 DevTools_dg[#_i,1] = _font;
 //                                                                          //
              _i=DevTools.APP_PERFORMANCE;

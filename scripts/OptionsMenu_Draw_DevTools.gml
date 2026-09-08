@@ -26,7 +26,9 @@ _yt1 += _DIST1; // pad
 
 
 
-for(_i=0; _i<DevTools.COUNT; _i++)
+// Keep the selected row visible now that this menu has another entry.
+var _visible=max(1,((MenuWindow_yb-_YT0) div (sprite_get_height(FONT2)+_DIST1))-3);
+for(_i=max(0,DevTools_cursor-_visible+1); _i<DevTools.COUNT; _i++)
 {
     if(!OptionsMenu_option_is_avail(menu_state_DEV_TOOLS,_i))
     {
